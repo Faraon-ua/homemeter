@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Test</h1>
+
+<form asp-controller="Upload" asp-action="Index" method="post" enctype="multipart/form-data">
+    <input type="file" name="imageFile" />
+    <input type="submit" />
+</form>

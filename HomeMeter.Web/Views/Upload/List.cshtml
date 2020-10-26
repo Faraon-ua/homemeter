@@ -1,0 +1,19 @@
+﻿@using System.IO
+@model Dictionary<FileInfo, string>
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach(var img in Model)
+{
+    <div>
+        <p>@img.Key.Name</p>
+        <img src="~/uploads/@img.Key.Name" width="400px"/>
+        <p>
+            @Html.Raw(img.Value)
+        </p>
+    </div>
+    <hr />
+}
+
