@@ -1,0 +1,26 @@
+﻿@using HomeMeter.Domain.Models
+@model ICollection<RequestLog>
+@{
+    ViewData["Title"] = "Requests";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach (var log in Model)
+{
+    <div>
+        <div>==@log.TimeStamp.ToString()==</div>
+        <div>[Headers]</div>
+        @foreach (var header in log.Headers)
+        {
+            <div>
+                @header.Name : @header.Value
+            </div>
+        }
+        <div>[Body]</div>
+        <p>
+            @log.Body
+        </p>
+    </div>
+    <hr />
+}
+

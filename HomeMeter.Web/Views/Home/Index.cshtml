@@ -2,9 +2,12 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>
-        <a href="@Url.Action("List","Upload")">Загруженные картинки</a>
-    </p>
-</div>
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>
+            <a href="@Url.Action("List","Upload")">Загруженные картинки</a>
+        </p>
+        <p>
+            <a href="@Url.Action("Requests","Upload")">Запросы</a>
+        </p>
+    </div>

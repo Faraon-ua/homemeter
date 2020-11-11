@@ -17,7 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\xml\" />
     <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HomeMeter.Domain\HomeMeter.Domain.csproj" />
+    <ProjectReference Include="..\HomeMeter.Services\HomeMeter.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

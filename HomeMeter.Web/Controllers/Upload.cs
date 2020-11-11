@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
+using HomeMeter.Domain.Models;
+using HomeMeter.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,8 +40,32 @@ namespace HomeMeter.Web.Controllers
             {
                 file.Delete();
             }
+            var requestLog = new RequestLog
+            {
+                TimeStamp = DateTime.UtcNow,
+                Headers = Request.Headers.Select(entry => new HeaderLog { Name = entry.Key, Value = entry.Value }).ToList(),
+            };
+            using (StreamReader reader
+                  = new StreamReader(Request.Body, Encoding.UTF8, true, 1024, true))
+            {
+                requestLog.Body = await reader.ReadToEndAsync();
+            }
+            var xmlPath = $"{_hostingEnvironment.WebRootPath}/xml/requests.xml";
+            var logs = XmlService.Deserialize<RequestLogs>(xmlPath) ?? new RequestLogs { Logs = new List<RequestLog>() };
+            logs.Logs = logs.Logs.OrderByDescending(entry => entry.TimeStamp).Take(5).ToList();
+            logs.Logs.Add(requestLog);
+            XmlService.Serialize(xmlPath, logs);
             return Ok();
         }
+
+        [HttpGet]
+        public IActionResult Requests()
+        {
+            var xmlPath = $"{_hostingEnvironment.WebRootPath}/xml/requests.xml";
+            var logs = XmlService.Deserialize<RequestLogs>(xmlPath) ?? new RequestLogs { Logs = new List<RequestLog>() };
+            return View(logs.Logs);
+        }
+
 
         [HttpGet]
         public IActionResult List()
@@ -53,7 +81,7 @@ namespace HomeMeter.Web.Controllers
                     {
                         using (var page = engine.Process(pix))
                         {
-                            result.Add(file, page.GetText().Replace("\n","<br>"));
+                            result.Add(file, page.GetText().Replace("\n", "<br>"));
                         }
                     }
                 }
