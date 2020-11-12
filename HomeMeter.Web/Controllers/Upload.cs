@@ -73,19 +73,21 @@ namespace HomeMeter.Web.Controllers
             var dir = new DirectoryInfo($"{_hostingEnvironment.WebRootPath}/uploads/");
             var result = new Dictionary<FileInfo, string>();
             var files = dir.GetFiles().OrderByDescending(entry => entry.CreationTime).ToList();
-            using (var engine = new TesseractEngine($"{_hostingEnvironment.ContentRootPath}/tessdata", "eng"))
+            //using (var engine = new TesseractEngine($"{_hostingEnvironment.ContentRootPath}/tessdata", "eng"))
+            //{
+            foreach (var file in files)
             {
-                foreach (var file in files)
-                {
-                    using (var pix = Pix.LoadFromFile(file.FullName))
-                    {
-                        using (var page = engine.Process(pix))
-                        {
-                            result.Add(file, page.GetText().Replace("\n", "<br>"));
-                        }
-                    }
-                }
+                result.Add(file, string.Empty);
+
+                //using (var pix = Pix.LoadFromFile(file.FullName))
+                //{
+                //    using (var page = engine.Process(pix))
+                //    {
+                //        //result.Add(file, page.GetText().Replace("\n", "<br>"));
+                //    }
+                //}
             }
+            //}
             return View(result);
         }
 
